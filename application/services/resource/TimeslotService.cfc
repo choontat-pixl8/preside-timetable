@@ -1,6 +1,6 @@
 component {
 	/**
-	 * @timeslotObject.inject presidecms:object:timeslot
+	 * @timeslotObject.inject      presidecms:object:timeslot
 	 * @websiteLoginService.inject WebsiteLoginService
 	**/
 	public any function init(
@@ -19,7 +19,7 @@ component {
 			, "timeslot.end_time   AS endTime"
 		];
 		var loggedInUserId = _getLogggedInUserId();
-		var timeslotQuery    = _getTimeslotObject().findByUserId( userId=loggedInUserId, selectFields=selectFields );
+		var timeslotQuery  = _getTimeslotObject().findByUserId( userId=loggedInUserId, selectFields=selectFields );
 
 		timeslotQuery.each( function( timeslot ){
 			timeslotArray.append( timeslot );
@@ -51,8 +51,8 @@ component {
 	public boolean function isTimeslotBelongsToCurrentUser( required string timeslotId ){
 		var timeslotQueryArgs = {
 			  selectFields = [ "timeslot.id" ]
-			, timeslotId = arguments.timeslotId
-			, userId = _getLogggedInUserId()
+			, timeslotId   = arguments.timeslotId
+			, userId       = _getLogggedInUserId()
 		};
 		var timeslotQuery = _getTimeslotObject().findByIdAndUserId( argumentCollection=timeslotQueryArgs );
 
@@ -66,8 +66,8 @@ component {
 			, "timeslot.end_time   AS endTime"
 		];
 		var timeslotQuery = _getTimeslotObject().findByIdAndUserId(
-			  timeslotId = timeslotId
-			, userId = _getLogggedInUserId()
+			  timeslotId   = timeslotId
+			, userId       = _getLogggedInUserId()
 			, selectFields = selectFields
 		);
 
@@ -89,7 +89,7 @@ component {
 			return false;
 		}
 
-		var data = _processTimeslotStruct( timeslotStruct );
+		var data            = _processTimeslotStruct( timeslotStruct );
 		var updatedRowCount = _getTimeslotObject().updateData(
 			  data = data
 			, id   = timeslotStruct.id?:""
@@ -105,7 +105,7 @@ component {
 
 		var deletedRowCount = _getTimeslotObject().deleteData( id=timeslotId );
 
-		return deletedRowCount == 1;
+		return deletedRowCount==1;
 	}
 
 	private struct function _processTimeslotStruct( required struct timeslotStruct ){

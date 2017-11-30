@@ -1,10 +1,10 @@
 component {
 	/**
-	 * @classSessionService.inject ClassSessionService
-	 * @dateConversionService.inject DateConversionService
-	 * @websiteLoginService.inject WebsiteLoginService
-	 * @timeslotService.inject TimeslotService
-	 * @lecturerService.inject LecturerService
+	 * @classSessionService.inject     ClassSessionService
+	 * @dateConversionService.inject   DateConversionService
+	 * @websiteLoginService.inject     WebsiteLoginService
+	 * @timeslotService.inject         TimeslotService
+	 * @lecturerService.inject         LecturerService
 	 * @generationRequestObject.inject presidecms:object:generation_request
 	**/
 	public any function init(
@@ -26,11 +26,11 @@ component {
 	}
 
 	public array function getTimetableArray(){
-		var userId = _getLogggedInUserId();
-		var selectFields = [
-			"generation_request.id"
-			, "generation_request.label AS name"
-			, "generation_request.datecreated AS requestDatetime"
+		var userId         = _getLogggedInUserId();
+		var selectFields   = [
+			  "generation_request.id"
+			, "generation_request.label                AS name"
+			, "generation_request.datecreated          AS requestDatetime"
 			, "generation_request.completion_timestamp AS completionDatetime"
 			, "generation_request.status"
 		];
@@ -45,14 +45,14 @@ component {
 	}
 
 	public struct function getTimetableByRequestId( required string requestId ){
-		var userId = _getLogggedInUserId();
-		var selectFields = [
+		var userId         = _getLogggedInUserId();
+		var selectFields   = [
 			  "generation_request.id"
-			, "generation_request.label AS name"
-			, "generation_request.datecreated AS requestDatetime"
+			, "generation_request.label                AS name"
+			, "generation_request.datecreated          AS requestDatetime"
 			, "generation_request.completion_timestamp AS completionDatetime"
 			, "generation_request.status"
-			, "website_user.display_name AS schedulerName"
+			, "website_user.display_name               AS schedulerName"
 		];
 		var timetableQuery = _getGenerationRequestObject().findByIdAndUserId(
 			  selectFields = selectFields
@@ -109,15 +109,15 @@ component {
 						continue;
 					}
 
-					assignedClassSession.timeslot = timeslot;
-					assignedClassSession.venueId = _getAvailableVenueId( 
+					assignedClassSession.timeslot   = timeslot;
+					assignedClassSession.venueId    = _getAvailableVenueId( 
 						  classSession
 						, timeslot
 						, classSessionDate
 						, assignedClassSessionArray
 					);
 					assignedClassSession.lecturerId = _getAvailableLecturerId(
-						classSession
+						  classSession
 						, timeslot
 						, assignedClassSessionArray
 						, classSessionDate
@@ -125,8 +125,8 @@ component {
 
 
 					if ( assignedClassSession.venueId.len()==0 || assignedClassSession.lecturerId.len()==0 ) {
-						structDelete( assignedClassSession, "timeslot" );
-						structDelete( assignedClassSession, "venueId" );
+						structDelete( assignedClassSession, "timeslot"   );
+						structDelete( assignedClassSession, "venueId"    );
 						structDelete( assignedClassSession, "lecturerId" );
 					} else {
 						classSessionDetailsComplete = true;
@@ -135,11 +135,12 @@ component {
 				}
 
 				if ( classSessionDetailsComplete ) {
-					assignedClassSession.intakeId = classSession.intakeId;
-					assignedClassSession.courseId = classSession.courseId;
-					assignedClassSession.moduleId = classSession.moduleId;
+					assignedClassSession.intakeId    = classSession.intakeId;
+					assignedClassSession.courseId    = classSession.courseId;
+					assignedClassSession.moduleId    = classSession.moduleId;
 					assignedClassSession.classTypeId = classSession.classTypeId;
-					assignedClassSession.date = classSessionDate;
+					assignedClassSession.date        = classSessionDate;
+
 					assignedClassSessionArray.append( assignedClassSession );
 					break;
 				}
@@ -149,7 +150,7 @@ component {
 		var processedClassSessionArray = [];
 
 		for ( assignedClassSession in assignedClassSessionArray ) {
-			var classSessionId = _getClassSessionService().addClassSession( assignedClassSession, generationRequestId );
+			var classSessionId        = _getClassSessionService().addClassSession( assignedClassSession, generationRequestId );
 			var processedClassSession = _getClassSessionService().getClassSessionById( classSessionId );
 
 			processedClassSessionArray.append( processedClassSession );
@@ -162,7 +163,7 @@ component {
 
 		return {
 			  classSessionArray = processedClassSessionArray
-			, requestId = generationRequestId
+			, requestId         = generationRequestId
 		};
 	}
 
@@ -183,10 +184,10 @@ component {
 	}
 
 	private boolean function _isTimeslotAvailable(
-		  required array assignedClassSessionArray
+		  required array  assignedClassSessionArray
 		, required struct classSession
 		, required struct timeslot
-		, required date classSessionDate
+		, required date   classSessionDate
 	){
 		for ( var assignedClassSession in assignedClassSessionArray ) {
 			if ( assignedClassSession.date!=classSessionDate ) {
@@ -208,8 +209,8 @@ component {
 	private string function _getAvailableLecturerId(
 		  required struct classSession
 		, required struct timeslot
-		, required array assignedClassSessionArray
-		, required date classSessionDate
+		, required array  assignedClassSessionArray
+		, required date   classSessionDate
 	){
 		var lecturerIdArray = _getLecturerService().getLecturersByCourseIdAndModuleId(
 			  moduleId    = classSession.moduleId
@@ -221,8 +222,8 @@ component {
 
 			for ( var assignedClassSession in assignedClassSessionArray ) {
 				if (
-					   assignedClassSession.date==classSessionDate
-					&& assignedClassSession.lecturerId==lecturerId
+					   assignedClassSession.date       == classSessionDate
+					&& assignedClassSession.lecturerId == lecturerId
 					&& _getTimeslotService().isTimeslotsOverlapped( assignedClassSession.timeslot, timeslot )
 				) {
 					validLecturer = false;
@@ -241,8 +242,8 @@ component {
 	private string function _getAvailableVenueId(
 		  required struct classSession
 		, required struct timeslot
-		, required date classSessionDate
-		, required array assignedClassSessionArray
+		, required date   classSessionDate
+		, required array  assignedClassSessionArray
 	){
 		for ( var venue in classSession.applicableVenues ) {
 			if ( !_isVenueOccupied( classSessionDate, timeslot, venue.id, assignedClassSessionArray ) ) {
@@ -254,10 +255,10 @@ component {
 	}
 
 	private boolean function _isVenueOccupied(
-		  required date classSessionDate
+		  required date   classSessionDate
 		, required struct timeslot
 		, required string venueId
-		, required array assignedClassSessionArray
+		, required array  assignedClassSessionArray
 	){
 		for ( var classSession in assignedClassSessionArray ) {
 			if (

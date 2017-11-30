@@ -15,12 +15,12 @@ component {
 		var moduleClassTypeArray = [];
 		var selectFields = [
 			  "module_class_type.id"
-			, "module.label AS moduleName"
-			, "module.abbreviation AS moduleAbbreviation"
-			, "class_type.label AS classTypeName"
+			, "module.label            AS moduleName"
+			, "module.abbreviation     AS moduleAbbreviation"
+			, "class_type.label        AS classTypeName"
 			, "class_type.abbreviation AS classTypeAbbreviation"
 		];
-		var loggedInUserId = _getWebsiteLoginService().getLoggedInUserId();
+		var loggedInUserId       = _getWebsiteLoginService().getLoggedInUserId();
 		var moduleClassTypeQuery = _getModuleClassTypeObject().findByNamesOrAbbreviations(
 			  selectFields = selectFields
 			, userId       = loggedInUserId
