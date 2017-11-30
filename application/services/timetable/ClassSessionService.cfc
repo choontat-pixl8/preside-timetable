@@ -36,30 +36,30 @@ component {
 
 	private struct function _processClassSessionData( required struct classSession, required string generationRequestId ){
 		return {
-			  "session_date" = classSession.date?:""
-			, "intake" = classSession.intakeId?:""
-			, "course" = classSession.courseId?:""
-			, "module" = classSession.moduleId?:""
-			, "class_type" = classSession.classTypeId?:""
-			, "lecturer" = classSession.lecturerId?:""
-			, "timeslot" = classSession.timeslot.id?:""
-			, "venue" = classSession.venueId?:""
-			, "generation_request" = generationRequestId?:""
-			, "is_published" = "0"
+			  "session_date"       = classSession.date        ?: ""
+			, "intake"             = classSession.intakeId    ?: ""
+			, "course"             = classSession.courseId    ?: ""
+			, "module"             = classSession.moduleId    ?: ""
+			, "class_type"         = classSession.classTypeId ?: ""
+			, "lecturer"           = classSession.lecturerId  ?: ""
+			, "timeslot"           = classSession.timeslot.id ?: ""
+			, "venue"              = classSession.venueId     ?: ""
+			, "generation_request" = generationRequestId      ?: ""
+			, "is_published"       = "0"
 		};
 	}
 
 	public struct function getClassSessionById( required string classSessionId ){
-		var selectFields = [
-			  "session_date AS date"
-			, "intake.label AS intakeName"
-			, "course.label AS courseName"
-			, "module.label AS moduleName"
-			, "class_type.label AS classTypeName"
-			, "lecturer.label AS lecturerName"
-			, "timeslot.start_time AS startTime"
+		var selectFields      = [
+			  "session_date                                                             AS date"
+			, "intake.label                                                             AS intakeName"
+			, "course.label                                                             AS courseName"
+			, "module.label                                                             AS moduleName"
+			, "class_type.label                                                         AS classTypeName"
+			, "lecturer.label                                                           AS lecturerName"
+			, "timeslot.start_time                                                      AS startTime"
 			, "DATE_ADD( timeslot.start_time, INTERVAL class_type.duration_min MINUTE ) AS endTime"
-			, "venue.label AS venueName"
+			, "venue.label                                                              AS venueName"
 		];
 		var classSessionQuery = _getClassSessionObject().findById( selectFields=selectFields, classSessionId=classSessionId );
 
@@ -75,9 +75,9 @@ component {
 	}
 
 	public array function getAssignableClassSessionArray( required date startDatetime, required date endDatetime ){
-		var loggedInUserId = _getWebsiteLoginService().getLoggedInUserId();
+		var loggedInUserId    = _getWebsiteLoginService().getLoggedInUserId();
 		var classSessionArray = [];
-		var intakeArray = _getAvailableIntakes( loggedInUserId, startDatetime, endDatetime );
+		var intakeArray       = _getAvailableIntakes( loggedInUserId, startDatetime, endDatetime );
 
 		for ( var intake in intakeArray ){
 			var coursesArray = _getAvailableCourses( intake.id, startDatetime, endDatetime );
@@ -140,10 +140,10 @@ component {
 	private array function _getAvailableIntakes( required string userId, required date startDatetime, required date endDatetime ){
 		var intakeArray = [];
 		var intakeQuery = _getIntakeObject().findAvailableByUserId(
-			  userId = userId
-			, selectFields = [ "intake.id" ]
+			  userId        = userId
+			, selectFields  = [ "intake.id" ]
 			, startDatetime = startDatetime
-			, endDatetime = endDatetime
+			, endDatetime   = endDatetime
 		);
 
 		intakeQuery.each( function( intake ){
@@ -156,10 +156,10 @@ component {
 	private array function _getAvailableCourses( required string intakeId, required date startDatetime, required date endDatetime ){
 		var courseArray = [];
 		var courseQuery = _getCourseObject().findAvailableByIntakeId(
-			  intakeId = intakeId
-			, selectFields = [ "course.id", "intake_course.student_count AS studentCount" ]
+			  intakeId      = intakeId
+			, selectFields  = [ "course.id", "intake_course.student_count AS studentCount" ]
 			, startDatetime = startDatetime
-			, endDatetime = endDatetime
+			, endDatetime   = endDatetime
 		);
 
 		courseQuery.each( function( course ){
@@ -172,10 +172,10 @@ component {
 	private array function _getAvailableModules( required string courseId, required date startDatetime, required date endDatetime ){
 		var moduleArray = [];
 		var moduleQuery = _getModuleObject().findAvailableByCourseId(
-			  courseId = courseId
-			, selectFields = [ "module.id", "module.assign_same_lecturer AS assignSameLecturer" ]
+			  courseId      = courseId
+			, selectFields  = [ "module.id", "module.assign_same_lecturer AS assignSameLecturer" ]
 			, startDatetime = startDatetime
-			, endDatetime = endDatetime
+			, endDatetime   = endDatetime
 		);
 
 		moduleQuery.each( function( module ){

@@ -1,8 +1,8 @@
 component {
 	/**
-	 * @venueObject.inject presidecms:object:venue
+	 * @venueObject.inject          presidecms:object:venue
 	 * @classTypeVenueObject.inject presidecms:object:class_type_venue
-	 * @websiteLoginService.inject WebsiteLoginService
+	 * @websiteLoginService.inject  WebsiteLoginService
 	**/
 	public any function init(
 		  required venue               venueObject
@@ -46,10 +46,9 @@ component {
 	}
 
 	public array function getRelatedClassTypesById( required string venueId ){
-		var selectFields = [ "class_type.label AS name" ];
-
+		var selectFields       = [ "class_type.label AS name" ];
 		var relatedVenuesQuery = _getClassTypeVenueObject().findByVenueId( venueId=venueId, selectFields=selectFields );
-		var relatedVenues = [];
+		var relatedVenues      = [];
 
 		relatedVenuesQuery.each( function( relatedVenue ){
 			relatedVenues.append( relatedVenue );
@@ -61,8 +60,8 @@ component {
 	public boolean function isVenueBelongsToCurrentUser( required string venueId ){
 		var venueQueryArgs = {
 			  selectFields = [ "venue.id" ]
-			, venueId = arguments.venueId
-			, userId = _getLogggedInUserId()
+			, venueId      = arguments.venueId
+			, userId       = _getLogggedInUserId()
 		};
 		var venueQuery = _getVenueObject().findByIdAndUserId( argumentCollection=venueQueryArgs );
 
@@ -77,12 +76,12 @@ component {
 			, "venue.available"
 		];
 		var venueQuery = _getVenueObject().findByIdAndUserId(
-			  venueId = venueId
-			, userId = _getLogggedInUserId()
+			  venueId      = venueId
+			, userId       = _getLogggedInUserId()
 			, selectFields = selectFields
 		);
 
-		if ( venueQuery.recordCount == 0 ) {
+		if ( venueQuery.recordCount==0 ) {
 			return {};
 		}
 
@@ -97,7 +96,7 @@ component {
 
 	public string function addRelatedClassType( required struct classTypeVenue, required string venueId ){
 		var classTypeVenueStruct = {
-			  "venue" = venueId
+			  "venue"      = venueId
 			, "class_type" = classTypeVenue.classTypeId
 		};
 
@@ -109,7 +108,7 @@ component {
 			return false;
 		}
 
-		var data = _processVenueStruct( venueStruct );
+		var data            = _processVenueStruct( venueStruct );
 		var updatedRowCount = _getVenueObject().updateData(
 			  data = data
 			, id   = venueStruct.id?:""
@@ -133,7 +132,7 @@ component {
 	public array function getVenueByNameOrAbbreviation( required string nameOrAbbreviation ){
 		var selectFields = [
 			  "venue.id"
-			, "venue.label as name"
+			, "venue.label AS name"
 			, "venue.abbreviation"
 		];
 		var venueQuery = _getVenueObject().findByNameOrAbbreviation(

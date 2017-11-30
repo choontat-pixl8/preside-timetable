@@ -55,7 +55,7 @@ component {
 
 		var updatedRowCount   = _getHolidayObject().updateData( data=holidayDataStruct, id=holidayId );
 
-		return updatedRowCount == 1;
+		return updatedRowCount==1;
 	}
 
 	public boolean function isHolidayBelongsToCurrentUser( required string holidayId ){
