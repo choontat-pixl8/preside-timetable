@@ -15,8 +15,8 @@ component {
 			return;
 		}
 
-		var rc = event.getCollection();
-		var prc = event.getCollection( private=true );
+		var rc        = event.getCollection();
+		var prc       = event.getCollection( private=true );
 		var pathParts = REReplace( path, "(^\/?rule\/)|(\.html$)", "", "ALL" ).split( "/" );
 
 		pathParts[ 1 ] = REReplace( pathParts[ 1 ], "-", "_", "ALL" );
@@ -27,7 +27,7 @@ component {
 				break;
 
 			case 3:
-				rc.event = "page-types.#pathParts[ 1 ]#_list.#pathParts[ 3 ]#";
+				rc.event                                   = "page-types.#pathParts[ 1 ]#_list.#pathParts[ 3 ]#";
 				prc[ _toCamelCase( pathParts[ 1 ] )&"Id" ] = pathParts[ 2 ];
 				break;
 
@@ -46,7 +46,7 @@ component {
 	}
 
 	private string function _toCamelCase( required string name ){
-		var nameArr = name.split("[^a-zA-Z0-9]");
+		var nameArr       = name.split("[^a-zA-Z0-9]");
         var camelCaseName = nameArr[ 1 ];
 
         for ( var i=2; i<=len( nameArr ); i++ ) {

@@ -1,9 +1,9 @@
 component {
 	/**
-	 * @moduleObject.inject presidecms:object:module
-	 * @courseModuleObject.inject presidecms:object:course_module
+	 * @moduleObject.inject          presidecms:object:module
+	 * @courseModuleObject.inject    presidecms:object:course_module
 	 * @moduleClassTypeObject.inject presidecms:object:module_class_type
-	 * @websiteLoginService.inject WebsiteLoginService
+	 * @websiteLoginService.inject   WebsiteLoginService
 	**/
 	public any function init(
 		  required module              moduleObject
@@ -31,10 +31,10 @@ component {
 
 		moduleQuery.each( function( module ){
 			var moduleStruct = {
-				  "id"           = module.id
-				, "name"         = module.name
-				, "description"  = module.description
-				, "abbreviation" = module.abbreviation
+				  "id"                 = module.id
+				, "name"               = module.name
+				, "description"        = module.description
+				, "abbreviation"       = module.abbreviation
 				, "assignSameLecturer" = module.assignSameLecturer
 			};
 
@@ -62,9 +62,9 @@ component {
 
 	public struct function getRelatedClassTypeByModuleClassTypeId( required string moduleClassTypeId ){
 		var selectFields = [
-			  "class_type.label                      AS name"
+			  "class_type.label                          AS name"
 			, "module_class_type.assign_time_range_start AS assignTimeRangeStart"
-			, "module_class_type.assign_time_range_end      AS assignTimeRangeEnd"
+			, "module_class_type.assign_time_range_end   AS assignTimeRangeEnd"
 		];
 
 		var relatedmodulesQuery = _getModuleClassTypeObject().findById( moduleClassTypeId=moduleClassTypeId, selectFields=selectFields );
@@ -78,9 +78,9 @@ component {
 
 	public array function getRelatedCoursesById( required string moduleId ){
 		var selectFields = [
-			  "course.label AS name"
+			  "course.label                      AS name"
 			, "course_module.effective_timestamp AS effectiveTimestamp"
-			, "course_module.idle_timestamp AS idleTimestamp"
+			, "course_module.idle_timestamp      AS idleTimestamp"
 		];
 
 		var relatedModulesQuery = _getCourseModuleObject().findByModuleId( moduleId=moduleId, selectFields=selectFields );
@@ -95,13 +95,13 @@ component {
 
 	public array function getRelatedClassTypesById( required string moduleId ){
 		var selectFields = [
-			  "class_type.label AS name"
+			  "class_type.label                          AS name"
 			, "module_class_type.assign_time_range_start AS assignTimeRangeStart"
-			, "module_class_type.assign_time_range_end AS assignTimeRangeEnd"
+			, "module_class_type.assign_time_range_end   AS assignTimeRangeEnd"
 		];
 
 		var relatedClassTypesQuery = _getModuleClassTypeObject().findByModuleId( moduleId=moduleId, selectFields=selectFields );
-		var relatedClassTypes = [];
+		var relatedClassTypes      = [];
 
 		relatedClassTypesQuery.each( function( relatedClassType ){
 			relatedClassTypes.append( relatedClassType );
@@ -113,8 +113,8 @@ component {
 	public boolean function isModuleBelongsToCurrentUser( required string moduleId ){
 		var moduleQueryArgs = {
 			  selectFields = [ "module.id" ]
-			, moduleId = arguments.moduleId
-			, userId = _getLogggedInUserId()
+			, moduleId     = arguments.moduleId
+			, userId       = _getLogggedInUserId()
 		};
 		var moduleQuery = _getModuleObject().findByIdAndUserId( argumentCollection=moduleQueryArgs );
 
@@ -123,20 +123,20 @@ component {
 
 	public struct function getModuleById( required string moduleId){
 		var selectFields = [
-			  "module.label AS name"
+			  "module.label                AS name"
 			, "module.description"
 			, "module.abbreviation"
 			, "module.assign_same_lecturer AS assignSameLecturer"
 		];
 		var moduleQuery = _getModuleObject().findByIdAndUserId(
-			  moduleId = moduleId
-			, userId = _getLogggedInUserId()
+			  moduleId     = moduleId
+			, userId       = _getLogggedInUserId()
 			, selectFields = selectFields
 		);
 		var moduleStruct = {
-			  "name" = moduleQuery.name
-			, "description" = moduleQuery.description
-			, "abbreviation" = moduleQuery.abbreviation
+			  "name"               = moduleQuery.name
+			, "description"        = moduleQuery.description
+			, "abbreviation"       = moduleQuery.abbreviation
 			, "assignSameLecturer" = moduleQuery.assignSameLecturer
 		};
 
@@ -151,10 +151,10 @@ component {
 
 	public string function addRelatedCourse( required struct courseModule, required string moduleId ){
 		var courseModuleStruct = {
-			  "module" = moduleId
-			, "course" = courseModule.courseId
+			  "module"              = moduleId
+			, "course"              = courseModule.courseId
 			, "effective_timestamp" = courseModule.effectiveTimestamp
-			, "idle_timestamp" = courseModule.idleTimestamp?:""
+			, "idle_timestamp"      = courseModule.idleTimestamp?:""
 		};
 
 		return _getCourseModuleObject().insertData( data=courseModuleStruct );
@@ -162,10 +162,10 @@ component {
 
 	public string function addRelatedClassType( required struct moduleClassType, required string moduleId ){
 		var moduleClassTypeStruct = {
-			  "module" = moduleId
-			, "class_type" = moduleClassType.classTypeId
+			  "module"                  = moduleId
+			, "class_type"              = moduleClassType.classTypeId
 			, "assign_time_range_start" = moduleClassType.assignTimeRangeStart
-			, "assign_time_range_end" = moduleClassType.assignTimeRangeEnd?:""
+			, "assign_time_range_end"   = moduleClassType.assignTimeRangeEnd?:""
 		};
 
 		return _getModuleClassTypeObject().insertData( data=moduleClassTypeStruct );
@@ -200,7 +200,7 @@ component {
 	public array function getModuleByNameOrAbbreviation( required string nameOrAbbreviation ){
 		var selectFields = [
 			  "module.id"
-			, "module.label as name"
+			, "module.label AS name"
 			, "module.abbreviation"
 		];
 		var moduleQuery = _getModuleObject().findByNameOrAbbreviation(
@@ -211,11 +211,7 @@ component {
 		var moduleArray = [];
 
 		moduleQuery.each( function( module ){
-			moduleArray.append( {
-				  "id" = module.id
-				, "name" = module.name
-				, "abbreviation" = module.abbreviation
-			} );
+			moduleArray.append( module );
 		} );
 
 		return moduleArray;
@@ -223,11 +219,11 @@ component {
 
 	private struct function _processModuleStruct( required struct moduleStruct ){
 		var processedModuleStruct = {
-			  "label"        = moduleStruct.name         ?: ""
-			, "description"  = moduleStruct.description  ?: ""
-			, "abbreviation" = moduleStruct.abbreviation ?: ""
+			  "label"                = moduleStruct.name         ?: ""
+			, "description"          = moduleStruct.description  ?: ""
+			, "abbreviation"         = moduleStruct.abbreviation ?: ""
 			, "assign_same_lecturer" = moduleStruct.assignSameLecturer == "1" ?: "0"
-			, "website_user" = _getLogggedInUserId()
+			, "website_user"         = _getLogggedInUserId()
 		};
 
 		return processedModuleStruct;
