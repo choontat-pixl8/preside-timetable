@@ -1,0 +1,6 @@
+/**
+ * @isSystemPageType true
+**/
+component {
+
+}

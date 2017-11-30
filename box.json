@@ -1,0 +1,14 @@
+{
+    "name":"Timetable Generator",
+    "version":"1.0.0",
+    "author":"Thum Choon Tat",
+    "slug":"practice-timetable",
+    "createPackageDirectory" : false,
+    "private":true,
+    "installPaths":{
+        "presidecms":"preside"
+    },
+    "dependencies":{
+        "presidecms":"stable"
+    }
+}
