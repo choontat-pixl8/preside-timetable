@@ -12,4 +12,8 @@ component {
 	public query function findByUserId( required string userId, required array selectFields ){
 		return this.selectData( selectFields=selectFields, filter={ "website_user.id"=userId } );
 	}
+
+	public query function findByIdAndUserId( required string userId, required string requestId, required array selectFields ){
+		return this.selectData( selectFields=selectFields, filter={ "website_user.id"=userId, "generation_request.id"=requestId } );
+	}
 }

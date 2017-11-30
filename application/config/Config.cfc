@@ -17,6 +17,8 @@ component extends="preside.system.config.Config" {
 
 		settings.features.websiteUsers.enabled = true;
 
+		settings.notificationTopics.append( "timetableGenerated" );
+
 		settings.enum.dayInWeek = [
 			  "Sunday"
 			, "Monday"

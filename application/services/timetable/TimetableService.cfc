@@ -44,7 +44,42 @@ component {
 		return timetableArray;
 	}
 
-	public array function generateTimetable( required struct generationRequest ){
+	public struct function getTimetableByRequestId( required string requestId ){
+		var userId = _getLogggedInUserId();
+		var selectFields = [
+			  "generation_request.id"
+			, "generation_request.label AS name"
+			, "generation_request.datecreated AS requestDatetime"
+			, "generation_request.completion_timestamp AS completionDatetime"
+			, "generation_request.status"
+			, "website_user.display_name AS schedulerName"
+		];
+		var timetableQuery = _getGenerationRequestObject().findByIdAndUserId(
+			  selectFields = selectFields
+			, userId       = userId
+			, requestId    = requestId
+		);
+
+		if ( timetableQuery.recordCount==0 ) {
+			return {};
+		}
+
+		return queryGetRow( timetableQuery, 1 );
+	}
+
+	public string function getSchedulerNameByRequestId( required string requestId ){
+		var userId = _getLogggedInUserId();
+		var selectFields = [ "website_user.display_name AS schedulerName" ];
+		var timetableQuery = _getGenerationRequestObject().findByIdAndUserId(
+			  selectFields = selectFields
+			, userId       = userId
+			, requestId    = requestId
+		);
+
+		return timetableQuery.schedulerName ?: "";
+	}
+
+	public struct function generateTimetable( required struct generationRequest ){
 		if ( !isGenerationRequestDataValid( generationRequest ) ) {
 			return;
 		}
@@ -125,7 +160,10 @@ component {
 			, id   = generationRequestId
 		);
 
-		return processedClassSessionArray;
+		return {
+			  classSessionArray = processedClassSessionArray
+			, requestId = generationRequestId
+		};
 	}
 
 	public boolean function isGenerationRequestDataValid( required struct generationRequest ){
