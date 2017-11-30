@@ -6,9 +6,9 @@ component extends="preside.system.config.Config" {
 		settings.preside_admin_path  = "preside_admin";
 		settings.system_users        = "sysadmin";
 		settings.default_locale      = "en";
-
 		settings.default_log_name    = "practice-timetable";
 		settings.default_log_level   = "information";
+		
 		settings.sql_log_name        = "practice-timetable";
 		settings.sql_log_level       = "information";
 

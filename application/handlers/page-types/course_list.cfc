@@ -1,19 +1,19 @@
 component {
-	property name="courseService" inject="CourseService";
+	property name="courseService"   inject="CourseService";
 	property name="siteTreeService" inject="SiteTreeService";
 
 	private function index( event, rc, prc, args={} ){
 		args.courseArray = courseService.getCourseArray();
 
 		return renderView(
-			  view = "page-types/timetable/resource/course/index"
-			, args = args
+			  view          = "page-types/timetable/resource/course/index"
+			, args          = args
 			, presideObject = "course_list"
 		);
 	}
 
 	public function search( event, rc, prc, args={} ){
-		var searchQuery = trim( rc.searchQuery ?: "" );
+		var searchQuery       = trim( rc.searchQuery ?: "" );
 		var searchResultArray = courseService.getCourseByNameOrAbbreviation( searchQuery );
 
 		return serializeJSON( searchResultArray );
@@ -21,16 +21,16 @@ component {
 
 	public function add( event, rc, prc, args={} ){
 		if ( event.getHTTPMethod() == "POST" ) {
-			var formName = "timetable.resource.course";
-			var formData = event.getCollectionForForm( formName );
+			var formName         = "timetable.resource.course";
+			var formData         = event.getCollectionForForm( formName );
 			var validationResult = validateForm( formName=formName, formData=formData );
-			var hasError = validationResult.listErrorFields().len() > 0;
+			var hasError         = validationResult.listErrorFields().len() > 0;
 
 			if ( hasError ) {
 				args.validationResult = validationResult;
-				args.savedData = formData;
+				args.savedData        = formData;
 			} else {
-				var linkTo = "resource/course";
+				var linkTo   = "resource/course";
 				var courseId = courseService.createCourse( formData );
 
 				if ( formData.addRelatedIntakesOrModules?:"0"=="1" ) {
@@ -44,7 +44,7 @@ component {
 		}
 
 		event.initializeDummyPresideSiteTreePage(
-			  title = "Add Course"
+			  title      = "Add Course"
 			, parentPage = siteTreeService.getPage( systemPage="course_list" )
 		);
 
@@ -52,11 +52,11 @@ component {
 	}
 
 	public function addRelatedIntake( event, rc, prc, args={} ){
-		var intakeId           = trim ( rc.intakeId?:"" );
-		var courseId           = trim ( rc.courseId?:"" );
-		var studentCount       = trim ( rc.studentCount?:"" );
-		var effectiveTimestamp = trim ( rc.effectiveTimestamp?:"" );
-		var idleTimestamp      = trim ( rc.idleTimestamp?:"" );
+		var intakeId           = trim ( rc.intakeId           ?: "" );
+		var courseId           = trim ( rc.courseId           ?: "" );
+		var studentCount       = trim ( rc.studentCount       ?: "" );
+		var effectiveTimestamp = trim ( rc.effectiveTimestamp ?: "" );
+		var idleTimestamp      = trim ( rc.idleTimestamp      ?: "" );
 
 		if (
 			   intakeId.len()           > 0
@@ -65,8 +65,8 @@ component {
 			&& effectiveTimestamp.len() > 0
 		) {
 			var intakeCourseStruct = {
-				  intakeId = intakeId
-				, studentCount = studentCount
+				  intakeId           = intakeId
+				, studentCount       = studentCount
 				, effectiveTimestamp = effectiveTimestamp
 			}
 
@@ -74,12 +74,12 @@ component {
 				intakeCourseStruct.idleTimestamp = idleTimestamp;
 			}
 
-			var intakeCourseId = courseService.addRelatedIntake( intakeCourseStruct, courseId );
+			var intakeCourseId     = courseService.addRelatedIntake( intakeCourseStruct, courseId );
 			var intakeCourseStruct = courseService.getRelatedIntakeByIntakeCourseId( intakeCourseId );
-			var message = "Related intake added.";
+			var message            = "Related intake added.";
 
 			intakeCourseStruct.effectiveTimestamp = dateTimeFormat( intakeCourseStruct.effectiveTimestamp, "yyyy-mm-dd HH:nn" );
-			intakeCourseStruct.idleTimestamp = dateTimeFormat( intakeCourseStruct.idleTimestamp, "yyyy-mm-dd HH:nn" );
+			intakeCourseStruct.idleTimestamp      = dateTimeFormat( intakeCourseStruct.idleTimestamp, "yyyy-mm-dd HH:nn" );
 
 			return _buildResponseMessageAsJson( message=message, messageType="success", success=true, data=intakeCourseStruct );
 		}
@@ -90,10 +90,10 @@ component {
 	}
 
 	public function addRelatedModule( event, rc, prc, args={} ){
-		var moduleId           = trim ( rc.moduleId?:"" );
-		var courseId           = trim ( rc.courseId?:"" );
-		var effectiveTimestamp = trim ( rc.effectiveTimestamp?:"" );
-		var idleTimestamp      = trim ( rc.idleTimestamp?:"" );
+		var moduleId           = trim ( rc.moduleId           ?: "" );
+		var courseId           = trim ( rc.courseId           ?: "" );
+		var effectiveTimestamp = trim ( rc.effectiveTimestamp ?: "" );
+		var idleTimestamp      = trim ( rc.idleTimestamp      ?: "" );
 
 		if (
 			   moduleId.len()           > 0
@@ -101,7 +101,7 @@ component {
 			&& effectiveTimestamp.len() > 0
 		) {
 			var courseModuleStruct = {
-				  moduleId = moduleId
+				  moduleId           = moduleId
 				, effectiveTimestamp = effectiveTimestamp
 			}
 
@@ -109,12 +109,12 @@ component {
 				courseModuleStruct.idleTimestamp = idleTimestamp;
 			}
 
-			var courseModuleId = courseService.addRelatedModule( courseModuleStruct, courseId );
+			var courseModuleId     = courseService.addRelatedModule( courseModuleStruct, courseId );
 			var courseModuleStruct = courseService.getRelatedModuleByCourseModuleId( courseModuleId );
-			var message = "Related module added.";
+			var message            = "Related module added.";
 
-			courseModuleStruct.effectiveTimestamp = dateTimeFormat( courseModuleStruct.effectiveTimestamp, "yyyy-mm-dd HH:nn" );
-			courseModuleStruct.idleTimestamp = dateTimeFormat( courseModuleStruct.idleTimestamp, "yyyy-mm-dd HH:nn" );
+			courseModuleStruct.effectiveTimestamp = dateTimeFormat( courseModuleStruct.effectiveTimestamp , "yyyy-mm-dd HH:nn" );
+			courseModuleStruct.idleTimestamp      = dateTimeFormat( courseModuleStruct.idleTimestamp      , "yyyy-mm-dd HH:nn" );
 
 			return _buildResponseMessageAsJson( message=message, messageType="success", success=true, data=courseModuleStruct );
 		}
@@ -132,18 +132,19 @@ component {
 			return;
 		}
 
-		args.courseDataStruct = courseService.getCourseById( courseId=courseId );
+		args.courseDataStruct    = courseService.getCourseById( courseId=courseId );
 		args.courseDataStruct.id = courseId;
-		args.relatedIntakes = courseService.getRelatedIntakesById( courseId );
-		args.relatedModules = courseService.getRelatedModulesById( courseId );
+		args.relatedIntakes      = courseService.getRelatedIntakesById( courseId );
+		args.relatedModules      = courseService.getRelatedModulesById( courseId );
 
 		event.initializeDummyPresideSiteTreePage(
-			  title = "View Course"
+			  title      = "View Course"
 			, parentPage = siteTreeService.getPage( systemPage="course_list" )
 		);
 
 		event.include( "css-resource" );
 		event.include( "js-course" );
+
 		event.includeData( {
 			  "addRelatedIntakeURL" = event.buildLink( linkTo="page-types.course_list.addRelatedIntake" )
 			, "addRelatedModuleURL" = event.buildLink( linkTo="page-types.course_list.addRelatedModule" )
@@ -154,10 +155,10 @@ component {
 
 	public function edit( event, rc, prc, args={} ){
 		var courseDetailsStruct = {
-			  "id" = rc.courseId?:""
-			, "name" = rc.name?:""
-			, "description" = rc.description?:""
-			, "abbreviation" = rc.abbreviation
+			  "id"           = rc.courseId     ?: ""
+			, "name"         = rc.name         ?: ""
+			, "description"  = rc.description  ?: ""
+			, "abbreviation" = rc.abbreviation ?: ""
 		};
 
 		var updated = courseService.updateCourse( courseDetailsStruct );
@@ -167,14 +168,15 @@ component {
 
 	public function delete( event, rc, prc, args={} ){
 		courseService.deleteCourse( rc.courseId?:"" );
+
 		setNextEvent( url=event.buildLink( linkTo="resource/course" ) );
 	}
 
 	private string function _buildResponseMessageAsJson(
 		  required string  message
-		,          string  messageType="info"
-		,          boolean success=false
-		,          struct  data={}
+		,          string  messageType = "info"
+		,          boolean success     = false
+		,          struct  data        = {}
 	){
 		return serializeJSON( { "message"=message, "messageType"=messageType, "success"=success, "data"=data } );
 	}

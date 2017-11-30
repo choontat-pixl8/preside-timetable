@@ -1,20 +1,20 @@
 component {
-	property name="timetableService" inject="TimetableService";
+	property name="timetableService"    inject="TimetableService";
 	property name="notificationService" inject="notificationService";
 
 	private function index( event, rc, prc, args={} ){
 		args.timetableArray = timetableService.getTimetableArray();
 
 		return renderView(
-			  view = "page-types/timetable/index"
-			, args = args
+			  view          = "page-types/timetable/index"
+			, args          = args
 			, presideObject = "timetable_list"
 		);
 	}
 
 	private function _generate( event, rc, prc, args={} ){
-		var generatedTimetableInfo = timetableService.generateTimetable( { name="Sample", dateOfWeek="2017-11-29" } );
-		args.generatedTimetable = generatedTimetableInfo.classSessionArray;
+		var generatedTimetableInfo = timetableService.generateTimetable( { name=rc.name?:"Sample", dateOfWeek="2017-11-29" } );
+		args.generatedTimetable    = generatedTimetableInfo.classSessionArray;
 
 		notificationService.createNotification(
               topic = "timetableGenerated"

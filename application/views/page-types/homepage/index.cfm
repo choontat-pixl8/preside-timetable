@@ -5,5 +5,4 @@
 	<div class="jumbotron"><h1>#args.title#</h1></div>
 
 	#args.main_content#
-	<a href="#event.buildLink( linkTo="page-types.timetable.test" )#">Test</a>
 </cfoutput>

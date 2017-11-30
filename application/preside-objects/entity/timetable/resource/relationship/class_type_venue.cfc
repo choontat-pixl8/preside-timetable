@@ -4,7 +4,7 @@
 **/
 component {
 	property name="class_type" relatedTo="class_type" relationship="many-to-one";
-	property name="venue" relatedTo="venue" relationship="many-to-one";
+	property name="venue"      relatedTo="venue"      relationship="many-to-one";
 
 	public query function findById( required string classTypeVenueId, required array selectFields ){
 		var filter = { "class_type_venue.id"=classTypeVenueId };

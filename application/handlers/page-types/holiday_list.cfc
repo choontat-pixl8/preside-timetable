@@ -15,6 +15,7 @@ component {
 	public function add( event, rc, prc, args={} ){
 		event.include( "css-rule" );
 		event.include( "js-holiday" );
+
 		event.includeData( {
 			"searchLecturerURL" = event.buildLink( linkTo="page-types.lecturer_list.search" )
 		} );
@@ -46,7 +47,7 @@ component {
 	}
 
 	public function delete( event, rc, prc, args={} ){
-		var holidayId = prc.holidayId?:"";
+		var holidayId = prc.holidayId ?: "";
 
 		if ( holidayService.isHolidayBelongsToCurrentUser( holidayId ) ) {
 			holidayService.deleteHoliday( holidayId );

@@ -25,7 +25,7 @@ component {
 				);
 			}
 
-			var hasError         = validationResult.listErrorFields().len() > 0;
+			var hasError = validationResult.listErrorFields().len() > 0;
 
 			if ( hasError ) {
 				args.validationResult = validationResult;
@@ -45,7 +45,7 @@ component {
 		}
 
 		event.initializeDummyPresideSiteTreePage(
-			  title = "Add Intake"
+			  title      = "Add Intake"
 			, parentPage = siteTreeService.getPage( systemPage="intake_list" )
 		);
 
@@ -75,7 +75,7 @@ component {
 			var message            = "Related course added.";
 
 			intakeCourseStruct.effectiveTimestamp = dateTimeFormat( intakeCourseStruct.effectiveTimestamp, "yyyy-mm-dd HH:nn" );
-			intakeCourseStruct.idleTimestamp      = dateTimeFormat( intakeCourseStruct.idleTimestamp,      "yyyy-mm-dd HH:nn" );
+			intakeCourseStruct.idleTimestamp      = dateTimeFormat( intakeCourseStruct.idleTimestamp     , "yyyy-mm-dd HH:nn" );
 
 			return _buildResponseMessageAsJson( message=message, messageType="success", success=true, data=intakeCourseStruct );
 		}
@@ -90,6 +90,7 @@ component {
 
 		if ( !intakeService.isIntakeBelongsToCurrentUser( intakeId ) ) {
 			event.accessDenied( reason="INSUFFICIENT_PRIVILEGES" );
+
 			return;
 		}
 
@@ -104,6 +105,7 @@ component {
 
 		event.include( "css-resource" );
 		event.include( "js-intake" );
+
 		event.includeData( {
 			"addRelatedCourseURL" = event.buildLink( linkTo="page-types.intake_list.addRelatedCourse" )
 		} );
@@ -113,10 +115,10 @@ component {
 
 	public function edit( event, rc, prc, args={} ){
 		var intakeDetailsStruct = {
-			  "id"           = rc.intakeId?:""
-			, "name"         = rc.name?:""
-			, "description"  = rc.description?:""
-			, "abbreviation" = rc.abbreviation?:""
+			  "id"           = rc.intakeId     ?: ""
+			, "name"         = rc.name         ?: ""
+			, "description"  = rc.description  ?: ""
+			, "abbreviation" = rc.abbreviation ?: ""
 		};
 		var validationResult = validateForm( formName="timetable.resource.intake", formData=intakeDetailsStruct );
 		var hasError         = validationResult.listErrorFields().len() > 0;
@@ -135,7 +137,7 @@ component {
 	}
 
 	public function search( event, rc, prc, args={} ){
-		var searchQuery = trim( rc.searchQuery ?: "" );
+		var searchQuery       = trim( rc.searchQuery ?: "" );
 		var searchResultArray = intakeService.getIntakeByNameOrAbbreviation( searchQuery );
 
 		return serializeJSON( searchResultArray );
@@ -143,9 +145,9 @@ component {
 
 	private string function _buildResponseMessageAsJson(
 		  required string  message
-		,          string  messageType="info"
-		,          boolean success=false
-		,          struct  data={}
+		,          string  messageType = "info"
+		,          boolean success     = false
+		,          struct  data        = {}
 	){
 		return serializeJSON( { "message"=message, "messageType"=messageType, "success"=success, "data"=data } );
 	}
