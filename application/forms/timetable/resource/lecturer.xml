@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form i18nBaseUri="timetable.resource.lecturer:">
+	<tab id="lecturer">
+		<fieldset id="lecturer">
+			<field name="name" required="true" maxLength="50">
+				<rule validator="match" message="timetable.resource.lecturer:validation.error.name.format">
+					<param name="regex" value="^[a-zA-Z0-9 ]+$" />
+				</rule>
+			</field>
+
+			<field name="abbreviation" required="true" maxLength="50"></field>
+			<field name="addRelatedModuleClassTypesOrWorkHours" control="yesNoSwitch" value="1" />
+		</fieldset>
+	</tab>
+</form>

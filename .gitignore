@@ -1,4 +1,16 @@
+<<<<<<< HEAD
 /.twgit_features_subject
 /.twgit
 /logs
 /preside
+=======
+/WEB-INF
+/uploads
+/logs
+/application/config/.injectedConfiguration
+/application/extensions/*
+/preside
+!/application/extensions/README.md
+!/application/extensions/extensions.json
+.twgit*
+>>>>>>> release-0.1.0

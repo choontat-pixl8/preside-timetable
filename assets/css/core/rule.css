@@ -1,0 +1,23 @@
+.input-group{
+	padding : 3px 3% ;
+}
+
+.input-group-addon{
+	min-width : 100px;
+}
+
+.dropdown-menu{
+	left : 3%;
+	width : 94%;
+	max-height : 200px;
+	overflow : auto;
+	display : block;
+}
+
+.dropdown-menu:empty{
+	display : none;
+}
+
+.input-group > .btn{
+	margin : 0 3px;
+}
