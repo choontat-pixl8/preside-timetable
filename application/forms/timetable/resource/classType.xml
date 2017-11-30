@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form i18nBaseUri="timetable.resource.classType:">
+	<tab id="classType">
+		<fieldset id="classType">
+			<field name="name" required="true" maxLength="50">
+				<rule validator="match" message="timetable.resource.classType:validation.error.name.format">
+					<param name="regex" value="^[a-zA-Z0-9 ]+$" />
+				</rule>
+			</field>
+
+			<field name="description" required="true" maxLength="100"></field>
+
+			<field name="abbreviation" required="true" maxLength="50">
+				<rule validator="match" message="timetable.resource.classType:validation.error.abbreviation.format">
+					<param name="regex" value="^[a-zA-Z0-9 \-_]+$" />
+				</rule>
+			</field>
+			<field name="durationInMin" control="spinner" value="0">
+				<rule validator="match" message="timetable.resource.classType:validation.error.durationInMin.outOfRange">
+					<param name="regex" value="^[0-9]+$" />
+				</rule>
+			</field>
+			<field name="applicableToSunday" control="yesNoSwitch" value="1" />
+			<field name="applicableToMonday" control="yesNoSwitch" value="1" />
+			<field name="applicableToTuesday" control="yesNoSwitch" value="1" />
+			<field name="applicableToWednesday" control="yesNoSwitch" value="1" />
+			<field name="applicableToThursday" control="yesNoSwitch" value="1" />
+			<field name="applicableToFriday" control="yesNoSwitch" value="1" />
+			<field name="applicableToSaturday" control="yesNoSwitch" value="1" />
+			<field name="addRelatedModulesOrVenues" control="yesNoSwitch" value="1"/>
+		</fieldset>
+	</tab>
+</form>
