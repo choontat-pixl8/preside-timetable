@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form i18nBaseUri="timetable.resource.intake:">
+	<tab id="intake">
+		<fieldset id="intake">
+			<field name="name" required="true" maxLength="50">
+				<rule validator="match" message="timetable.resource.intake:validation.error.name.format">
+					<param name="regex" value="^[a-zA-Z0-9 ]+$" />
+				</rule>
+			</field>
+
+			<field name="description" required="true" maxLength="100"></field>
+
+			<field name="abbreviation" required="true" maxLength="50">
+				<rule validator="match" message="timetable.resource.intake:validation.error.abbreviation.format">
+					<param name="regex" value="^[a-zA-Z0-9 \-_]+$" />
+				</rule>
+			</field>
+			<field name="addRelatedCourses" control="yesNoSwitch" />
+		</fieldset>
+	</tab>
+</form>
