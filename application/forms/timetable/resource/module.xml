@@ -15,7 +15,8 @@
 					<param name="regex" value="^[a-zA-Z0-9 \-_]+$" />
 				</rule>
 			</field>
-			<field name="assignSameLecturer" control="yesNoSwitch" defaultValue="true" />
+
+			<field name="assignSameLecturer"            control="yesNoSwitch" defaultValue="true" />
 			<field name="addRelatedCoursesOrClassTypes" control="yesNoSwitch" value="1" />
 		</fieldset>
 	</tab>

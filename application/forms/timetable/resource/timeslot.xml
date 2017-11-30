@@ -3,7 +3,7 @@
 	<tab id="timeslot">
 		<fieldset id="timeslot">
 			<field name="startTime" required="true" control="timepicker" />
-			<field name="endTime" required="true" control="timepicker">
+			<field name="endTime"   required="true" control="timepicker">
 				<rule validator="laterThanField" message="timetable.resource.timeslot:validation.error.endTime.earlierThanStartTime">
 					<param name="field" value="startTime" />
 				</rule>

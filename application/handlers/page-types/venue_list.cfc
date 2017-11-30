@@ -1,5 +1,5 @@
 component {
-	property name="venueService" inject="VenueService";
+	property name="venueService"    inject="VenueService";
 	property name="siteTreeService" inject="SiteTreeService";
 
 	private function index( event, rc, prc, args={} ){
@@ -14,16 +14,16 @@ component {
 
 	public function add( event, rc, prc, args={} ){
 		if ( event.getHTTPMethod() == "POST" ) {
-			var formName = "timetable.resource.venue";
-			var formData = event.getCollectionForForm( formName );
+			var formName         = "timetable.resource.venue";
+			var formData         = event.getCollectionForForm( formName );
 			var validationResult = validateForm( formName=formName, formData=formData );
-			var hasError = validationResult.listErrorFields().len() > 0;
+			var hasError         = validationResult.listErrorFields().len() > 0;
 
 			if ( hasError ) {
 				args.validationResult = validationResult;
-				args.savedData = formData;
+				args.savedData        = formData;
 			} else {
-				var linkTo = "resource/venue";
+				var linkTo  = "resource/venue";
 				var venueId = venueService.createVenue( formData );
 
 				if ( ( formData.addRelatedClassTypes?:"0" )=="1" ) {
@@ -37,7 +37,7 @@ component {
 		}
 
 		event.initializeDummyPresideSiteTreePage(
-			  title = "Add Venue"
+			  title      = "Add Venue"
 			, parentPage = siteTreeService.getPage( systemPage="venue_list" )
 		);
 
@@ -45,17 +45,14 @@ component {
 	}
 
 	public function addRelatedClassType( event, rc, prc, args={} ){
-		var venueId            = trim ( rc.venueId?:"" );
-		var classTypeId        = trim ( rc.classTypeId?:"" );
+		var venueId     = trim ( rc.venueId     ?: "" );
+		var classTypeId = trim ( rc.classTypeId ?: "" );
 
 		if ( venueId.len()>0 && classTypeId.len()>0 ) {
-			var classTypeVenueStruct = {
-				classTypeId = classTypeId
-			};
-
-			var classTypeVenueId = venueService.addRelatedClassType( classTypeVenueStruct, venueId );
+			var classTypeVenueStruct = { classTypeId = classTypeId };
+			var classTypeVenueId     = venueService.addRelatedClassType( classTypeVenueStruct, venueId );
 			var classTypeVenueStruct = venueService.getRelatedClassTypeByClassTypeVenueId( classTypeVenueId );
-			var message = "Related class type added.";
+			var message              = "Related class type added.";
 
 			return _buildResponseMessageAsJson( message=message, messageType="success", success=true, data=classTypeVenueStruct );
 		}
@@ -73,17 +70,18 @@ component {
 			return;
 		}
 
-		args.venueDataStruct = venueService.getVenueById( venueId=venueId );
+		args.venueDataStruct    = venueService.getVenueById( venueId=venueId );
 		args.venueDataStruct.id = venueId;
-		args.relatedClassTypes = venueService.getRelatedClassTypesById( venueId );
+		args.relatedClassTypes  = venueService.getRelatedClassTypesById( venueId );
 
 		event.initializeDummyPresideSiteTreePage(
-			  title = "View Venue"
+			  title      = "View Venue"
 			, parentPage = siteTreeService.getPage( systemPage="venue_list" )
 		);
 
 		event.include( "css-resource" );
 		event.include( "js-venue" );
+
 		event.includeData( {
 			"addRelatedClassTypeURL" = event.buildLink( linkTo="page-types.venue_list.addRelatedClassType" )
 		} );
@@ -93,11 +91,11 @@ component {
 
 	public function edit( event, rc, prc, args={} ){
 		var venueDetailsStruct = {
-			  "id" = rc.venueId?:""
-			, "name" = rc.name?:""
-			, "abbreviation" = rc.abbreviation?:""
-			, "capacity" = rc.capacity?:"0"
-			, "available" = rc.available?:"0"
+			  "id"           = rc.venueId      ?: ""
+			, "name"         = rc.name         ?: ""
+			, "abbreviation" = rc.abbreviation ?: ""
+			, "capacity"     = rc.capacity     ?: "0"
+			, "available"    = rc.available    ?: "0"
 		};
 
 		var updated = venueService.updateVenue( venueDetailsStruct );
@@ -112,7 +110,7 @@ component {
 	}
 
 	public function search( event, rc, prc, args={} ){
-		var searchQuery = trim( rc.searchQuery ?: "" );
+		var searchQuery       = trim( rc.searchQuery ?: "" );
 		var searchResultArray = venueService.getVenueByNameOrAbbreviation( searchQuery );
 
 		return serializeJSON( searchResultArray );
@@ -120,9 +118,9 @@ component {
 
 	private string function _buildResponseMessageAsJson(
 		  required string  message
-		,          string  messageType="info"
-		,          boolean success=false
-		,          struct  data={}
+		,          string  messageType = "info"
+		,          boolean success     = false
+		,          struct  data        = {}
 	){
 		return serializeJSON( { "message"=message, "messageType"=messageType, "success"=success, "data"=data } );
 	}

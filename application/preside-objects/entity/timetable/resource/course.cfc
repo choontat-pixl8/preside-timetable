@@ -5,10 +5,11 @@ component dataManagerGroup="resource"{
 	property name="description"  required="true" maxLength="100";
 	property name="abbreviation" required="true" maxLength="20" uniqueIndexes="abbreviation";
 
-	property name="website_user"   relatedTo="website_user"   relationship="many-to-one";
-	property name="intakes" relatedTo="intake" relationship="many-to-many" relatedVia="intake_course";
-	property name="modules" relatedTo="module" relationship="many-to-many" relatedVia="course_module";
-	property name="custom_rules" relatedTo="custom_rule" relationship="one-to-many" relationshipKey="course";
+	property name="website_user" relatedTo="website_user" relationship="many-to-one";
+	property name="intakes"      relatedTo="intake"       relationship="many-to-many" relatedVia="intake_course";
+	property name="modules"      relatedTo="module"       relationship="many-to-many" relatedVia="course_module";
+
+	property name="custom_rules" relatedTo="custom_rule"  relationship="one-to-many"  relationshipKey="course";
 
 	public query function findByIdAndUserId( required string courseId, required string userId, required array selectFields ){
 		var filter = {
@@ -32,12 +33,12 @@ component dataManagerGroup="resource"{
 
 	public query function findByNameOrAbbreviation(
 		  required string nameOrAbbreviation
-		, required array selectFields
+		, required array  selectFields
 		, required string userId
 	){
 		return this.selectData(
-			selectFields = selectFields
-			, filter = "
+			selectFields   = selectFields
+			, filter       = "
 				    website_user.id = :website_user.id
 				AND (
 				       course.label        LIKE :course.label
@@ -45,8 +46,8 @@ component dataManagerGroup="resource"{
 				)
 			"
 			, filterParams = {
-				  "website_user.id" = userId
-				, "course.label" = "%#nameOrAbbreviation#%"
+				  "website_user.id"     = userId
+				, "course.label"        = "%#nameOrAbbreviation#%"
 				, "course.abbreviation" = "%#nameOrAbbreviation#%"
 			}
 		);
@@ -54,14 +55,14 @@ component dataManagerGroup="resource"{
 
 	public query function findAvailableByIntakeId(
 		  required string intakeId
-		, required array selectFields
-		, required date startDatetime
-		, required date endDatetime 
+		, required array  selectFields
+		, required date   startDatetime
+		, required date   endDatetime 
 	){
 		return this.selectData(
-			selectFields = selectFields
-			, filter = "
-				    intakes.id = :intakes.id
+			  selectFields = selectFields
+			, filter       = "
+				    intakes.id                         = :intakes.id
 				AND intake_course.effective_timestamp <= :intake_course.effective_timestamp
 				AND (
 				       intake_course.idle_timestamp IS NULL
@@ -69,9 +70,9 @@ component dataManagerGroup="resource"{
 				)
 			"
 			, filterParams = {
-				  "intakes.id" = intakeId
+				  "intakes.id"                        = intakeId
 				, "intake_course.effective_timestamp" = startDatetime
-				, "intake_course.idle_timestamp" = endDatetime
+				, "intake_course.idle_timestamp"      = endDatetime
 			}
 		);
 	}

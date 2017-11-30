@@ -12,15 +12,15 @@ component {
 	}
 
 	private string function emailSubject( event, rc, prc, args={} ){
-
+		return "Timetable generated";
 	}
 
 	private string function emailHTML( event, rc, prc, args={} ){
-
+		return "";
 	}
 
 	private string function emailText( event, rc, prc, args={} ){
-
+		return "";
 	}
 
 	private string function _getNotificationSubject( required string requestId ){

@@ -2,8 +2,9 @@
  * @isSystemPageType true
 **/
 component {
-	property name="description"             required="true"                              maxLength="100";
-	property name="abbreviation"            required="true"                              maxLength="20" uniqueIndexes="abbreviation";
+	property name="description"             required="true" maxLength="100";
+	property name="abbreviation"            required="true" maxLength="20" uniqueIndexes="abbreviation";
+
 	property name="duration_min"            required="true" dbtype="int";
 	property name="applicable_to_sunday"    required="true" dbtype="tinyint" default="0";
 	property name="applicable_to_monday"    required="true" dbtype="tinyint" default="0";
@@ -13,9 +14,9 @@ component {
 	property name="applicable_to_friday"    required="true" dbtype="tinyint" default="0";
 	property name="applicable_to_saturday"  required="true" dbtype="tinyint" default="0";
 
-	property name="website_user"   relatedTo="website_user"   relationship="many-to-one";
-	property name="module" relatedTo="module" relationship="many-to-many" relatedVia="module_class_type";
-	property name="venue"  reletedTo="venue"  relationship="many-to-many" relatedVia="class_type_venue";
+	property name="website_user" relatedTo="website_user" relationship="many-to-one";
+	property name="module"       relatedTo="module"       relationship="many-to-many" relatedVia="module_class_type";
+	property name="venue"        reletedTo="venue"        relationship="many-to-many" relatedVia="class_type_venue";
 
 	public query function findByIdAndUserId( required string classTypeId, required string userId, required array selectFields ){
 		var filter = {
@@ -39,12 +40,12 @@ component {
 
 	public query function findByNameOrAbbreviation(
 		  required string nameOrAbbreviation
-		, required array selectFields
+		, required array  selectFields
 		, required string userId
 	){
 		return this.selectData(
-			selectFields = selectFields
-			, filter = "
+			  selectFields = selectFields
+			, filter       = "
 				    website_user.id = :website_user.id
 				AND (
 				       class_type.label        LIKE :class_type.label
@@ -52,8 +53,8 @@ component {
 				)
 			"
 			, filterParams = {
-				  "website_user.id" = userId
-				, "class_type.label" = "%#nameOrAbbreviation#%"
+				  "website_user.id"         = userId
+				, "class_type.label"        = "%#nameOrAbbreviation#%"
 				, "class_type.abbreviation" = "%#nameOrAbbreviation#%"
 			}
 		);

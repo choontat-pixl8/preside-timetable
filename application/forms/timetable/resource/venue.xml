@@ -18,7 +18,7 @@
 					<param name="regex" value="^[0-9]+$" />
 				</rule>
 			</field>
-			<field name="available" control="yesNoSwitch" defaultValue="true" />
+			<field name="available"            control="yesNoSwitch" defaultValue="true" />
 			<field name="addRelatedClassTypes" control="yesNoSwitch" />
 		</fieldset>
 	</tab>

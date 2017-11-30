@@ -1,17 +1,17 @@
 component {
 	/**
-	 * @courseObject.inject presidecms:object:course
-	 * @intakeCourseObject.inject presidecms:object:intake_course
-	 * @courseModuleObject.inject presidecms:object:course_module
+	 * @courseObject.inject        presidecms:object:course
+	 * @intakeCourseObject.inject  presidecms:object:intake_course
+	 * @courseModuleObject.inject  presidecms:object:course_module
 	 * @websiteLoginService.inject WebsiteLoginService
-	 * @intakeService.inject delayedInjector:IntakeService
+	 * @intakeService.inject       delayedInjector:IntakeService
 	**/
 	public CourseService function init( 
-		  required any courseObject
-		, required intake_course intakeCourseObject
-		, required course_module courseModuleObject
+		  required any                 courseObject
+		, required intake_course       intakeCourseObject
+		, required course_module       courseModuleObject
 		, required WebsiteLoginService websiteLoginService
-		, required any intakeService
+		, required any                 intakeService
 	){
 		_setCourseObject( courseObject );
 		_setIntakeCourseObject( intakeCourseObject );
@@ -49,21 +49,21 @@ component {
 
 	public array function getRelatedIntakesById( required string courseId ){
 		var selectFields = [
-			  "intake_course.student_count AS studentCount"
-			, "intake.label AS name"
+			  "intake_course.student_count       AS studentCount"
+			, "intake.label                      AS name"
 			, "intake_course.effective_timestamp AS effectiveTimestamp"
-			, "intake_course.idle_timestamp AS idleTimestamp"
+			, "intake_course.idle_timestamp      AS idleTimestamp"
 		];
 
 		var relatedIntakesQuery = _getIntakeCourseObject().findByCourseId( courseId=courseId, selectFields=selectFields );
-		var relatedIntakes = [];
+		var relatedIntakes      = [];
 
 		relatedIntakesQuery.each( function( relatedIntake ){
 			relatedIntakes.append( {
-				"name" = relatedIntake.name
-				, "studentCount" = relatedIntake.studentCount
+				  "name"               = relatedIntake.name
+				, "studentCount"       = relatedIntake.studentCount
 				, "effectiveTimestamp" = relatedIntake.effectiveTimestamp
-				, "idleTimestamp" = relatedIntake.idleTimestamp
+				, "idleTimestamp"      = relatedIntake.idleTimestamp
 			} );
 		} );
 
@@ -72,19 +72,19 @@ component {
 
 	public array function getRelatedModulesById( required string courseId ){
 		var selectFields = [
-			  "module.label AS name"
+			  "module.label                      AS name"
 			, "course_module.effective_timestamp AS effectiveTimestamp"
-			, "course_module.idle_timestamp AS idleTimestamp"
+			, "course_module.idle_timestamp      AS idleTimestamp"
 		];
 
 		var relatedModulesQuery = _getCourseModuleObject().findByCourseId( courseId=courseId, selectFields=selectFields );
-		var relatedModules = [];
+		var relatedModules      = [];
 
 		relatedModulesQuery.each( function( relatedModule ){
 			relatedModules.append( {
-				  "name" = relatedModule.name
+				  "name"               = relatedModule.name
 				, "effectiveTimestamp" = relatedModule.effectiveTimestamp
-				, "idleTimestamp" = relatedModule.idleTimestamp
+				, "idleTimestamp"      = relatedModule.idleTimestamp
 			} );
 		} );
 
@@ -93,14 +93,14 @@ component {
 
 	public struct function getCourseById( required string courseId ){
 		var selectFields = [ "course.label AS name", "course.description", "course.abbreviation" ];
-		var courseQuery = _getCourseObject().findByIdAndUserId(
-			  courseId = courseId
-			, userId = _getLogggedInUserId()
+		var courseQuery  = _getCourseObject().findByIdAndUserId(
+			  courseId     = courseId
+			, userId       = _getLogggedInUserId()
 			, selectFields = selectFields
 		);
 		var courseStruct = {
-			  "name" = courseQuery.name
-			, "description" = courseQuery.description
+			  "name"         = courseQuery.name
+			, "description"  = courseQuery.description
 			, "abbreviation" = courseQuery.abbreviation
 		};
 
@@ -110,7 +110,7 @@ component {
 	public array function getCourseByNameOrAbbreviation( required string nameOrAbbreviation ){
 		var selectFields = [
 			  "course.id"
-			, "course.label as name"
+			, "course.label AS name"
 			, "course.abbreviation"
 		];
 		var courseQuery = _getCourseObject().findByNameOrAbbreviation(
@@ -121,11 +121,7 @@ component {
 		var courseArray = [];
 
 		courseQuery.each( function( course ){
-			courseArray.append( {
-				  "id" = course.id
-				, "name" = course.name
-				, "abbreviation" = course.abbreviation
-			} );
+			courseArray.append( course );
 		} );
 
 		return courseArray;
@@ -134,8 +130,8 @@ component {
 	public boolean function isCourseBelongsToCurrentUser( required string courseId ){
 		var courseQueryArgs = {
 			  selectFields = [ "course.id" ]
-			, courseId = arguments.courseId
-			, userId = _getLogggedInUserId()
+			, courseId     = arguments.courseId
+			, userId       = _getLogggedInUserId()
 		};
 		var courseQuery = _getCourseObject().findByIdAndUserId( argumentCollection=courseQueryArgs );
 
@@ -144,11 +140,11 @@ component {
 
 	public string function addRelatedIntake( required struct intakeCourse, required string courseId ){
 		var intakeCourseStruct = {
-			  "course" = courseId
-			, "intake" = intakeCourse.intakeId
-			, "student_count" = val( intakeCourse.studentCount )
+			  "course"              = courseId
+			, "intake"              = intakeCourse.intakeId
+			, "student_count"       = val( intakeCourse.studentCount )
 			, "effective_timestamp" = intakeCourse.effectiveTimestamp
-			, "idle_timestamp" = intakeCourse.idleTimestamp?:""
+			, "idle_timestamp"      = intakeCourse.idleTimestamp?:""
 		};
 
 		return _getIntakeCourseObject().insertData( data=intakeCourseStruct );
@@ -156,10 +152,10 @@ component {
 
 	public string function addRelatedModule( required struct courseModule, required string courseId ){
 		var courseModuleStruct = {
-			  "course" = courseId
-			, "module" = courseModule.moduleId
+			  "course"              = courseId
+			, "module"              = courseModule.moduleId
 			, "effective_timestamp" = courseModule.effectiveTimestamp
-			, "idle_timestamp" = courseModule.idleTimestamp?:""
+			, "idle_timestamp"      = courseModule.idleTimestamp?:""
 		};
 
 		return _getCourseModuleObject().insertData( data=courseModuleStruct );
@@ -190,7 +186,7 @@ component {
 
 		var relatedintakesQuery = _getIntakeCourseObject().findById( intakeCourseId=intakeCourseId, selectFields=selectFields );
 
-		if ( relatedintakesQuery.recordCount == 0) {
+		if ( relatedintakesQuery.recordCount==0 ) {
 			return {};
 		}
 
@@ -235,7 +231,7 @@ component {
 			return false;
 		}
 
-		var data = _processCourseStruct( courseStruct );
+		var data            = _processCourseStruct( courseStruct );
 		var updatedRowCount = _getCourseObject().updateData(
 			  data = data
 			, id   = courseStruct.id?:""

@@ -4,10 +4,10 @@
 **/
 component {
 	property name="effective_timestamp" dbtype="timestamp" required="true" dbDefault="CURRENT_TIMESTAMP";
-	property name="idle_timestamp" dbtype="timestamp";
+	property name="idle_timestamp"      dbtype="timestamp";
 
 	property name="module_class_type" relatedTo="module_class_type" relationship="many-to-one";
-	property name="lecturer" relatedTo="lecturer" relationship="many-to-one";
+	property name="lecturer"          relatedTo="lecturer"          relationship="many-to-one";
 
 	public query function findById( required string moduleClassTypeLecturerId, required array selectFields ){
 		var filter = { "module_class_type_lecturer.id"=moduleClassTypeLecturerId };
@@ -24,7 +24,7 @@ component {
 	public query function findByModuleIdAndClassTypeId(
 		  required string moduleId
 		, required string classTypeId
-		, required array selectFields
+		, required array  selectFields
 	){
 		var filter = { "module_class_type.module"=moduleId, "module_class_type.class_type"=classTypeId };
 
