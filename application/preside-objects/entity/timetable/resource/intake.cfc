@@ -9,13 +9,12 @@ component dataManagerGroup="resource"{
 
 	property name="intake_courses" relatedTo="intake_course" relationship="one-to-many"  relationshipKey="intake";
 	property name="custom_rules"   relatedTo="custom_rule"   relationship="one-to-many"  relationshipKey="intake";
-
 	property name="website_user"   relatedTo="website_user"  relationship="many-to-one";
 
 	public query function findByAbbreviation(
 		  required string  abbreviation
 		, required array   selectFields
-		,          boolean caseSensitive=false
+		,          boolean caseSensitive = false
 	){
 		var filter       = "intake.abbreviation = #caseSensitive?"BINARY":""# :intake.abbreviation";
 		var filterParams = { "intake.abbreviation"=abbreviation };
@@ -70,7 +69,7 @@ component dataManagerGroup="resource"{
 		return this.selectData(
 			  selectFields = selectFields
 			, filter       = "
-				    website_user.id                   =  :website_user.id
+				    website_user.id                    = :website_user.id
 				AND intake_course.effective_timestamp <= :intake_course.effective_timestamp
 				AND (
 				       intake_course.idle_timestamp   IS NULL

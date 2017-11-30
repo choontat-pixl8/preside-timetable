@@ -6,24 +6,24 @@ component {
 		args.timeslotArray = timeslotService.getTimeslotArray();
 
 		return renderView(
-			  view = "page-types/timetable/resource/timeslot/index"
-			, args = args
+			  view          = "page-types/timetable/resource/timeslot/index"
+			, args          = args
 			, presideObject = "timeslot_list"
 		);
 	}
 
 	public function add( event, rc, prc, args={} ){
 		if ( event.getHTTPMethod() == "POST" ) {
-			var formName = "timetable.resource.timeslot";
-			var formData = event.getCollectionForForm( formName );
+			var formName         = "timetable.resource.timeslot";
+			var formData         = event.getCollectionForForm( formName );
 			var validationResult = validateForm( formName=formName, formData=formData );
-			var hasError = validationResult.listErrorFields().len() > 0;
+			var hasError         = validationResult.listErrorFields().len() > 0;
 
 			if ( hasError ) {
 				args.validationResult = validationResult;
-				args.savedData = formData;
+				args.savedData        = formData;
 			} else {
-				var linkTo = "resource/timeslot";
+				var linkTo     = "resource/timeslot";
 				var timeslotId = timeslotService.createTimeslot( formData );
 
 				if ( formData.addRelatedClassTypes?:"0"=="1" ) {
@@ -37,7 +37,7 @@ component {
 		}
 
 		event.initializeDummyPresideSiteTreePage(
-			  title = "Add Timeslot"
+			  title      = "Add Timeslot"
 			, parentPage = siteTreeService.getPage( systemPage="timeslot_list" )
 		);
 
@@ -52,11 +52,11 @@ component {
 			return;
 		}
 
-		args.timeslotDataStruct = timeslotService.getTimeslotById( timeslotId=timeslotId );
+		args.timeslotDataStruct    = timeslotService.getTimeslotById( timeslotId=timeslotId );
 		args.timeslotDataStruct.id = timeslotId;
 
 		event.initializeDummyPresideSiteTreePage(
-			  title = "View Timeslot"
+			  title      = "View Timeslot"
 			, parentPage = siteTreeService.getPage( systemPage="timeslot_list" )
 		);
 
@@ -67,9 +67,9 @@ component {
 
 	public function edit( event, rc, prc, args={} ){
 		var timeslotDetailsStruct = {
-			  "id" = rc.timeslotId?:""
-			, "startTime" = rc.startTime?:""
-			, "endTime" = rc.endTime?:""
+			  "id"        = rc.timeslotId ?: ""
+			, "startTime" = rc.startTime  ?: ""
+			, "endTime"   = rc.endTime    ?: ""
 		};
 
 		var updated = timeslotService.updateTimeslot( timeslotDetailsStruct );

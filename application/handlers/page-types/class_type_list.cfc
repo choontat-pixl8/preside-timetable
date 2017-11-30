@@ -1,29 +1,29 @@
 component {
 	property name="classTypeService" inject="ClassTypeService";
-	property name="siteTreeService" inject="SiteTreeService";
+	property name="siteTreeService"  inject="SiteTreeService";
 
 	private function index( event, rc, prc, args={} ){
 		args.classTypeArray = classTypeService.getClassTypeArray();
 
 		return renderView(
-			  view = "page-types/timetable/resource/class_type/index"
-			, args = args
+			  view          = "page-types/timetable/resource/class_type/index"
+			, args          = args
 			, presideObject = "class_type_list"
 		);
 	}
 
 	public function add( event, rc, prc, args={} ){
 		if ( event.getHTTPMethod() == "POST" ) {
-			var formName = "timetable.resource.classType";
-			var formData = event.getCollectionForForm( formName );
+			var formName         = "timetable.resource.classType";
+			var formData         = event.getCollectionForForm( formName );
 			var validationResult = validateForm( formName=formName, formData=formData );
-			var hasError = validationResult.listErrorFields().len() > 0;
+			var hasError         = validationResult.listErrorFields().len() > 0;
 
 			if ( hasError ) {
 				args.validationResult = validationResult;
-				args.savedData = formData;
+				args.savedData        = formData;
 			} else {
-				var linkTo = "resource/class-type";
+				var linkTo      = "resource/class-type";
 				var classTypeId = classTypeService.createClassType( formData );
 
 				if ( formData.addRelatedModulesOrVenues?:"0"=="1" ) {
@@ -37,7 +37,7 @@ component {
 		}
 
 		event.initializeDummyPresideSiteTreePage(
-			  title = "Add ClassType"
+			  title      = "Add ClassType"
 			, parentPage = siteTreeService.getPage( systemPage="class_type_list" )
 		);
 
@@ -45,10 +45,10 @@ component {
 	}
 
 	public function addRelatedModule( event, rc, prc, args={} ){
-		var classTypeId        = trim ( rc.classTypeId?:"" );
-		var moduleId           = trim ( rc.moduleId?:"" );
-		var assignTimeRangeStart = trim ( rc.assignTimeRangeStart?:"" );
-		var assignTimeRangeEnd      = trim ( rc.assignTimeRangeEnd?:"" );
+		var classTypeId          = trim ( rc.classTypeId          ?: "" );
+		var moduleId             = trim ( rc.moduleId             ?: "" );
+		var assignTimeRangeStart = trim ( rc.assignTimeRangeStart ?: "" );
+		var assignTimeRangeEnd   = trim ( rc.assignTimeRangeEnd   ?: "" );
 
 		if (
 			   classTypeId.len()          > 0
@@ -78,13 +78,13 @@ component {
 	}
 
 	public function addRelatedVenue( event, rc, prc, args={} ){
-		var venueId = trim( rc.venueId?:"" );
-		var classTypeId = trim( rc.classTypeId?:"" );
+		var venueId     = trim( rc.venueId     ?: "" );
+		var classTypeId = trim( rc.classTypeId ?: "" );
 
 		if ( venueId.len() > 0 && classTypeId.len() > 0 ) {
-			var relatedVenueId = classTypeService.addRelatedVenue( venueId=venueId, classTypeId=classTypeId );
+			var relatedVenueId     = classTypeService.addRelatedVenue( venueId=venueId, classTypeId=classTypeId );
 			var relatedVenueStruct = classTypeService.getRelatedVenueByClassTypeVenueId( relatedVenueId );
-			var message = "Related venue added.";
+			var message            = "Related venue added.";
 
 			return _buildResponseMessageAsJson( message=message, messageType="success", success=true, data=relatedVenueStruct );
 		}
@@ -103,18 +103,19 @@ component {
 			return;
 		}
 
-		args.classTypeDataStruct = classTypeService.getClassTypeById( classTypeId=classTypeId );
+		args.classTypeDataStruct    = classTypeService.getClassTypeById( classTypeId=classTypeId );
 		args.classTypeDataStruct.id = classTypeId;
-		args.relatedModules = classTypeService.getRelatedModulesById( classTypeId );
-		args.relatedVenues = classTypeService.getRelatedVenuesById( classTypeId );
+		args.relatedModules         = classTypeService.getRelatedModulesById( classTypeId );
+		args.relatedVenues          = classTypeService.getRelatedVenuesById( classTypeId );
 
 		event.initializeDummyPresideSiteTreePage(
-			  title = "View ClassType"
+			  title      = "View ClassType"
 			, parentPage = siteTreeService.getPage( systemPage="class_type_list" )
 		);
 
 		event.include( "css-resource" );
 		event.include( "js-classType" );
+
 		event.includeData( {
 			  "addRelatedModuleURL" = event.buildLink( linkTo="page-types.class_type_list.addRelatedModule" )
 			, "addRelatedVenueURL"  = event.buildLink( linkTo="page-types.class_type_list.addRelatedVenue" )
@@ -125,18 +126,18 @@ component {
 
 	public function edit( event, rc, prc, args={} ){
 		var moduleDetailsStruct = {
-			  "id" = rc.classTypeId?:""
-			, "name" = rc.name?:""
-			, "description" = rc.description?:""
-			, "abbreviation" = rc.abbreviation?:""
-			, "durationInMinutes" = rc.durationInMinutes?:"0"
-			, "applicableToSunday" = rc.applicableToSunday ?: "0"
-			, "applicableToMonday" = rc.applicableToMonday ?: "0"
-			, "applicableToTuesday" = rc.applicableToTuesday ?: "0"
+			  "id"                    = rc.classTypeId           ?: ""
+			, "name"                  = rc.name                  ?: ""
+			, "description"           = rc.description           ?: ""
+			, "abbreviation"          = rc.abbreviation          ?: ""
+			, "durationInMinutes"     = rc.durationInMinutes     ?: "0"
+			, "applicableToSunday"    = rc.applicableToSunday    ?: "0"
+			, "applicableToMonday"    = rc.applicableToMonday    ?: "0"
+			, "applicableToTuesday"   = rc.applicableToTuesday   ?: "0"
 			, "applicableToWednesday" = rc.applicableToWednesday ?: "0"
-			, "applicableToThursday" = rc.applicableToThursday ?: "0"
-			, "applicableToFriday" = rc.applicableToFriday ?: "0"
-			, "applicableToSaturday" = rc.applicableToSaturday ?: "0"
+			, "applicableToThursday"  = rc.applicableToThursday  ?: "0"
+			, "applicableToFriday"    = rc.applicableToFriday    ?: "0"
+			, "applicableToSaturday"  = rc.applicableToSaturday  ?: "0"
 		};
 
 		var updated = classTypeService.updateClassType( moduleDetailsStruct );
@@ -151,7 +152,7 @@ component {
 	}
 
 	public function search( event, rc, prc, args={} ){
-		var searchQuery = trim( rc.searchQuery ?: "" );
+		var searchQuery       = trim( rc.searchQuery ?: "" );
 		var searchResultArray = classTypeService.getClassTypeByNameOrAbbreviation( searchQuery );
 
 		return serializeJSON( searchResultArray );
@@ -159,9 +160,9 @@ component {
 
 	private string function _buildResponseMessageAsJson(
 		  required string  message
-		,          string  messageType="info"
-		,          boolean success=false
-		,          struct  data={}
+		,          string  messageType = "info"
+		,          boolean success     = false
+		,          struct  data        = {}
 	){
 		return serializeJSON( { "message"=message, "messageType"=messageType, "success"=success, "data"=data } );
 	}

@@ -9,6 +9,7 @@
 			</field>
 
 			<field name="abbreviation" required="true" maxLength="50"></field>
+			
 			<field name="addRelatedModuleClassTypesOrWorkHours" control="yesNoSwitch" value="1" />
 		</fieldset>
 	</tab>

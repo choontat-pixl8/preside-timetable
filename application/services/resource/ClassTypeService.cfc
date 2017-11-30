@@ -1,9 +1,9 @@
 component {
 	/**
-	 * @classTypeObject.inject presidecms:object:class_type
+	 * @classTypeObject.inject       presidecms:object:class_type
 	 * @moduleClassTypeObject.inject presidecms:object:module_class_type
-	 * @classTypeVenueObject.inject presidecms:object:class_type_venue
-	 * @websiteLoginService.inject WebsiteLoginService
+	 * @classTypeVenueObject.inject  presidecms:object:class_type_venue
+	 * @websiteLoginService.inject   WebsiteLoginService
 	**/
 	public any function init(
 		  required class_type          classTypeObject
@@ -21,36 +21,36 @@ component {
 		var classTypeArray = [];
 		var selectFields   = [
 			  "class_type.id"
-			, "class_type.label AS name"
+			, "class_type.label                   AS name"
 			, "class_type.description"
 			, "class_type.abbreviation"
-			, "class_type.duration_min AS durationInMinutes"
-			, "class_type.applicable_to_sunday AS applicableToSunday"
-			, "class_type.applicable_to_monday AS applicableToMonday"
-			, "class_type.applicable_to_tuesday AS applicableToTuesday"
+			, "class_type.duration_min            AS durationInMinutes"
+			, "class_type.applicable_to_sunday    AS applicableToSunday"
+			, "class_type.applicable_to_monday    AS applicableToMonday"
+			, "class_type.applicable_to_tuesday   AS applicableToTuesday"
 			, "class_type.applicable_to_wednesday AS applicableToWednesday"
-			, "class_type.applicable_to_thursday AS applicableToThursday"
-			, "class_type.applicable_to_friday AS applicableToFriday"
-			, "class_type.applicable_to_saturday AS applicableToSaturday"
+			, "class_type.applicable_to_thursday  AS applicableToThursday"
+			, "class_type.applicable_to_friday    AS applicableToFriday"
+			, "class_type.applicable_to_saturday  AS applicableToSaturday"
 		];
 
 		var loggedInUserId = _getWebsiteLoginService().getLoggedInUserId();
-		var classTypeQuery    = _getClassTypeObject().findByUserId( userId=loggedInUserId, selectFields=selectFields );
+		var classTypeQuery = _getClassTypeObject().findByUserId( userId=loggedInUserId, selectFields=selectFields );
 
 		classTypeQuery.each( function( classType ){
 			var classTypeStruct = {
-				  "id"           = classType.id
-				, "name"         = classType.name
-				, "description"  = classType.description
-				, "abbreviation" = classType.abbreviation
+				  "id"             = classType.id
+				, "name"           = classType.name
+				, "description"    = classType.description
+				, "abbreviation"   = classType.abbreviation
 				, "applicableDays" = {
-					  "sunday" = classType.applicableToSunday == "1" ?: "0"
-					, "monday" = classType.applicableToMonday == "1" ?: "0"
-					, "tuesday" = classType.applicableToTuesday == "1" ?: "0"
+					  "sunday"    = classType.applicableToSunday    == "1" ?: "0"
+					, "monday"    = classType.applicableToMonday    == "1" ?: "0"
+					, "tuesday"   = classType.applicableToTuesday   == "1" ?: "0"
 					, "wednesday" = classType.applicableToWednesday == "1" ?: "0"
-					, "thursday" = classType.applicableToThursday == "1" ?: "0"
-					, "friday" = classType.applicableToFriday == "1" ?: "0"
-					, "saturday" = classType.applicableToSaturday == "1" ?: "0"
+					, "thursday"  = classType.applicableToThursday  == "1" ?: "0"
+					, "friday"    = classType.applicableToFriday    == "1" ?: "0"
+					, "saturday"  = classType.applicableToSaturday  == "1" ?: "0"
 				}
 			};
 
@@ -64,7 +64,7 @@ component {
 		var selectFields = [
 			  "module.label                              AS name"
 			, "module_class_type.assign_time_range_start AS assignTimeRangeStart"
-			, "module_class_type.assign_time_range_end AS assignTimeRangeEnd"
+			, "module_class_type.assign_time_range_end   AS assignTimeRangeEnd"
 		];
 
 		var relatedModulesQuery = _getModuleClassTypeObject().findById(
@@ -77,13 +77,13 @@ component {
 
 	public array function getRelatedModulesById( required string classTypeId ){
 		var selectFields = [
-			  "module.label AS moduleName"
+			  "module.label                              AS moduleName"
 			, "module_class_type.assign_time_range_start AS assignTimeRangeStart"
-			, "module_class_type.assign_time_range_end AS assignTimeRangeEnd"
+			, "module_class_type.assign_time_range_end   AS assignTimeRangeEnd"
 		];
 
 		var relatedModulesQuery = _getModuleClassTypeObject().findByClassTypeId( classTypeId=classTypeId, selectFields=selectFields );
-		var relatedModules = [];
+		var relatedModules      = [];
 
 		relatedModulesQuery.each( function( relatedModule ){
 			relatedModules.append( relatedModule );
@@ -95,8 +95,8 @@ component {
 	public boolean function isClassTypeBelongsToCurrentUser( required string classTypeId ){
 		var moduleQueryArgs = {
 			  selectFields = [ "class_type.id" ]
-			, classTypeId = arguments.classTypeId
-			, userId = _getLogggedInUserId()
+			, classTypeId  = arguments.classTypeId
+			, userId       = _getLogggedInUserId()
 		};
 		var moduleQuery = _getClassTypeObject().findByIdAndUserId( argumentCollection=moduleQueryArgs );
 
@@ -105,21 +105,21 @@ component {
 
 	public struct function getClassTypeById( required string classTypeId){
 		var selectFields = [
-			  "class_type.label AS name"
+			  "class_type.label                   AS name"
 			, "class_type.description"
 			, "class_type.abbreviation"
-			, "class_type.duration_min AS durationInMinutes"
-			, "class_type.applicable_to_sunday AS applicableToSunday"
-			, "class_type.applicable_to_monday AS applicableToMonday"
-			, "class_type.applicable_to_tuesday AS applicableToTuesday"
+			, "class_type.duration_min            AS durationInMinutes"
+			, "class_type.applicable_to_sunday    AS applicableToSunday"
+			, "class_type.applicable_to_monday    AS applicableToMonday"
+			, "class_type.applicable_to_tuesday   AS applicableToTuesday"
 			, "class_type.applicable_to_wednesday AS applicableToWednesday"
-			, "class_type.applicable_to_thursday AS applicableToThursday"
-			, "class_type.applicable_to_friday AS applicableToFriday"
-			, "class_type.applicable_to_saturday AS applicableToSaturday"
+			, "class_type.applicable_to_thursday  AS applicableToThursday"
+			, "class_type.applicable_to_friday    AS applicableToFriday"
+			, "class_type.applicable_to_saturday  AS applicableToSaturday"
 		];
 		var moduleQuery = _getClassTypeObject().findByIdAndUserId(
-			  classTypeId = classTypeId
-			, userId = _getLogggedInUserId()
+			  classTypeId  = classTypeId
+			, userId       = _getLogggedInUserId()
 			, selectFields = selectFields
 		);
 
@@ -133,9 +133,9 @@ component {
 	}
 
 	public struct function getRelatedVenueByClassTypeVenueId( required string classTypeVenueId ){
-		var selectFields = [ "venue.label AS name" ];
+		var selectFields        = [ "venue.label AS name" ];
 		var classTypeVenueQuery = _getClassTypeVenueObject().findById(
-			  selectFields = selectFields
+			  selectFields     = selectFields
 			, classTypeVenueId = classTypeVenueId
 		);
 
@@ -143,9 +143,9 @@ component {
 	}
 
 	public array function getRelatedVenuesById( required string classTypeId ){
-		var selectFields = [ "venue.label AS name" ];
+		var selectFields   = [ "venue.label AS name" ];
 		var classTypeQuery = _getClassTypeVenueObject().findByClassTypeId(
-			  classTypeId = classTypeId
+			  classTypeId  = classTypeId
 			, selectFields = selectFields
 		);
 		var classTypes = [];
@@ -159,10 +159,10 @@ component {
 
 	public string function addRelatedModule( required struct moduleClassType, required string classTypeId ){
 		var moduleClassTypeStruct = {
-			  "class_type" = classTypeId
-			, "module" = moduleClassType.moduleId
+			  "class_type"              = classTypeId
+			, "module"                  = moduleClassType.moduleId
 			, "assign_time_range_start" = moduleClassType.assignTimeRangeStart
-			, "assign_time_range_end" = moduleClassType.assignTimeRangeEnd
+			, "assign_time_range_end"   = moduleClassType.assignTimeRangeEnd
 		};
 
 		return _getModuleClassTypeObject().insertData( data=moduleClassTypeStruct );
@@ -170,7 +170,7 @@ component {
 
 	public string function addRelatedVenue( required string venueId, required string classTypeId ){
 		var classTypeVenueStruct = {
-			  "venue" = venueId
+			  "venue"      = venueId
 			, "class_type" = classTypeId
 		};
 
@@ -180,8 +180,8 @@ component {
 	private boolean function _relatedModuleExists( required string classTypeId, required string moduleId ){
 		var moduleClassTypeQuery = _getModuleClassTypeObject().findByClassTypeAndmodule(
 			  selectFields = [ "id" ]
-			, classTypeId = classTypeId
-			, moduleId = moduleId
+			, classTypeId  = classTypeId
+			, moduleId     = moduleId
 		);
 
 		return moduleClassTypeQuery.recordCount > 0;
@@ -206,7 +206,7 @@ component {
 		var filter = { "class_type"=classTypeId };
 
 		_getModuleClassTypeObject().deleteData( filter=filter );
-		_getClassTypeVenueObject().deleteData( filter=filter );
+		_getClassTypeVenueObject().deleteData(  filter=filter );
 		
 		var deletedRowCount = _getClassTypeObject().deleteData( id=classTypeId );
 
@@ -216,7 +216,7 @@ component {
 	public array function getClassTypeByNameOrAbbreviation( required string nameOrAbbreviation ){
 		var selectFields = [
 			  "class_type.id"
-			, "class_type.label as name"
+			, "class_type.label AS name"
 			, "class_type.abbreviation"
 		];
 		var classTypeQuery = _getClassTypeObject().findByNameOrAbbreviation(

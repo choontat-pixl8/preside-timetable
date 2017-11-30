@@ -3,14 +3,18 @@
 	timetableArray = args.timetableArray ?: [];
 </cfscript>
 <cfoutput>
-	<h2>
-		#args.title#
-		<a href="#event.buildLink( linkTo="page-types/timetable/generate" )#">
-			<span class="glyphicon glyphicon-plus btn btn-success">
-				Generate
-			</span>
-		</a>
-	</h2>
+	<form action="#event.buildLink( linkTo="page-types/timetable/generate" )#" method="POST">
+		<div class="input-group">
+			<span  class="input-group-addon">Name</span>
+			<input class="form-control" type="text" name="name" />
+			<div   class="input-group-btn">
+				<input class="btn btn-success" type="submit" value="Generate" />
+			</div>
+		</div>
+	</form>
+
+	<h2>#args.title#</h2>
+
 	<table class="table">
 		<thead>
 			<tr>

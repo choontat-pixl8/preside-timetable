@@ -60,7 +60,7 @@ component {
 			var message                = "Lecturer work hour added.";
 
 			lecturerWorkHourStruct.startTime = timeFormat( lecturerWorkHourStruct.startTime, "HH:mm" );
-			lecturerWorkHourStruct.endTime   = timeFormat( lecturerWorkHourStruct.endTime,   "HH:mm" );
+			lecturerWorkHourStruct.endTime   = timeFormat( lecturerWorkHourStruct.endTime  , "HH:mm" );
 
 			return _buildResponseMessageAsJson( message=message, messageType="success", success=true, data=lecturerWorkHourStruct );
 		}
@@ -82,7 +82,7 @@ component {
 			&& effectiveTimestamp.len() > 0
 		) {
 			var moduleClassTypeLecturerStruct = {
-				  id  = moduleClassTypeId
+				  id                 = moduleClassTypeId
 				, effectiveTimestamp = effectiveTimestamp
 			}
 
@@ -97,7 +97,7 @@ component {
 			var moduleClassTypeLecturerStruct = lecturerService.getRelatedModuleClassTypeByModuleClassTypeLecturerId(
 				moduleClassTypeLecturerId
 			);
-			var message = "Related module and class type added.";
+			var message                       = "Related module and class type added.";
 
 			moduleClassTypeLecturerStruct.effectiveTimestamp = dateTimeFormat(
 				  moduleClassTypeLecturerStruct.effectiveTimestamp
@@ -129,22 +129,23 @@ component {
 			return;
 		}
 
-		args.lecturerDataStruct = lecturerService.getLecturerById( lecturerId=lecturerId );
-		args.lecturerDataStruct.id = lecturerId;
+		args.lecturerDataStruct      = lecturerService.getLecturerById( lecturerId=lecturerId );
+		args.lecturerDataStruct.id   = lecturerId;
 		args.relatedModuleClassTypes = lecturerService.getRelatedModuleClassTypesById( lecturerId );
-		args.lecturerWorkHours = lecturerService.getLecturerWorkHoursById( lecturerId );
+		args.lecturerWorkHours       = lecturerService.getLecturerWorkHoursById( lecturerId );
 
 		event.initializeDummyPresideSiteTreePage(
-			  title = "View Lecturer"
+			  title      = "View Lecturer"
 			, parentPage = siteTreeService.getPage( systemPage="lecturer_list" )
 		);
 
 		event.include( "css-resource" );
 		event.include( "js-lecturer" );
+
 		event.includeData( {
 			  "addRelatedModuleClassTypeURL" = event.buildLink( linkTo="page-types.lecturer_list.addRelatedModuleClassTypes" )
-			, "addLecturerWorkHourURL"       = event.buildLink( linkTo="page-types.lecturer_list.addLecturerWorkHour" )
-			, "searchModuleClassTypeURL"     = event.buildLink( linkTo="page-types.module_class_type_list.search" )
+			, "addLecturerWorkHourURL"       = event.buildLink( linkTo="page-types.lecturer_list.addLecturerWorkHour"        )
+			, "searchModuleClassTypeURL"     = event.buildLink( linkTo="page-types.module_class_type_list.search"            )
 		} );
 
 		event.setView( view="page-types/timetable/resource/lecturer/view", args=args );
@@ -152,10 +153,10 @@ component {
 
 	public function edit( event, rc, prc, args={} ){
 		var lecturerDetailsStruct = {
-			  "id" = rc.lecturerId?:""
-			, "name" = rc.name?:""
-			, "description" = rc.description?:""
-			, "abbreviation" = rc.abbreviation
+			  "id"           = rc.lecturerId   ?: ""
+			, "name"         = rc.name         ?: ""
+			, "description"  = rc.description  ?: ""
+			, "abbreviation" = rc.abbreviation ?: ""
 		};
 
 		var updated = lecturerService.updateLecturer( lecturerDetailsStruct );
@@ -165,11 +166,12 @@ component {
 
 	public function delete( event, rc, prc, args={} ){
 		lecturerService.deleteLecturer( rc.lecturerId?:"" );
+
 		setNextEvent( url=event.buildLink( linkTo="resource/lecturer" ) );
 	}
 
 	public function search( event, rc, prc, args={} ){
-		var searchQuery = trim( rc.searchQuery ?: "" );
+		var searchQuery       = trim( rc.searchQuery ?: "" );
 		var searchResultArray = lecturerService.getLecturerByNameOrAbbreviation( searchQuery );
 
 		return serializeJSON( searchResultArray );
@@ -177,9 +179,9 @@ component {
 
 	private string function _buildResponseMessageAsJson(
 		  required string  message
-		,          string  messageType="info"
-		,          boolean success=false
-		,          struct  data={}
+		,          string  messageType = "info"
+		,          boolean success     = false
+		,          struct  data        = {}
 	){
 		return serializeJSON( { "message"=message, "messageType"=messageType, "success"=success, "data"=data } );
 	}

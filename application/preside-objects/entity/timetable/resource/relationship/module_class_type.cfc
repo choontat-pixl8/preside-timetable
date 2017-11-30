@@ -6,10 +6,23 @@ component {
 	property name="assign_time_range_start" dbtype="time" required="true";
 	property name="assign_time_range_end"   dbtype="time" required="true";
 
-	property name="time_overlap_rules" relatedTo="time_overlap_rule" relationship="one-to-many" relationshipKey="module_class_type";
-	property name="class_merging_rules" relatedTo="class_merging_rule" relationship="one-to-many" relationshipKey="module_class_type";
-	property name="module_class_type_lecturers" relatedTo="module_class_type_lecturer" relationship="one-to-many" relationshipKey="module_class_type";
-	property name="module" relatedTo="module" relationship="many-to-one";
+	property
+		name            = "time_overlap_rules"
+		relatedTo       = "time_overlap_rule"
+		relationship    = "one-to-many"
+		relationshipKey = "module_class_type";
+	property 
+		name            = "class_merging_rules"
+		relatedTo       = "class_merging_rule"
+		relationship    = "one-to-many"
+		relationshipKey = "module_class_type";
+	property
+		name            = "module_class_type_lecturers"
+		relatedTo       = "module_class_type_lecturer"
+		relationship    = "one-to-many"
+		relationshipKey = "module_class_type";
+
+	property name="module"     relatedTo="module" relationship="many-to-one";
 	property name="class_type" relatedTo="class_type" relationship="many-to-one";
 
 	public query function findById( required string moduleClassTypeId, required array selectFields ){
