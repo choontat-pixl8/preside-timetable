@@ -1,0 +1,6 @@
+[submodule "application/extensions/preside-ext-elasticsearch"]
+	path = application/extensions/preside-ext-elasticsearch
+	url = https://github.com/pixl8/preside-ext-elasticsearch.git
+[submodule "application/extensions/preside-ext-resource-library"]
+	path = application/extensions/preside-ext-resource-library
+	url = https://pixl8.git.beanstalkapp.com/preside-ext-resource-library.git
